@@ -37,6 +37,7 @@ docker build -t fit4110/iot-ingestion:lab04 .
 ```
 
 **Kết quả mong đợi:**
+
 ```
 ...
 Successfully built <image-id>
@@ -44,6 +45,7 @@ Successfully tagged fit4110/iot-ingestion:lab04
 ```
 
 **Troubleshooting:**
+
 - Nếu lỗi `permission denied`: Thêm `sudo` hoặc add user vào docker group:
   ```bash
   sudo usermod -aG docker $USER
@@ -66,11 +68,13 @@ docker run --rm \
 ```
 
 **Kết quả mong đợi:**
+
 ```
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 ```
 
 **Troubleshooting:**
+
 - Nếu port 8000 đã bị dùng: `docker run -p 9000:8000 ...` rồi dùng `http://localhost:9000`
 - Nếu container exit ngay lập tức: Kiểm tra logs:
   ```bash
@@ -86,6 +90,7 @@ curl http://localhost:8000/health
 ```
 
 **Kết quả mong đợi:**
+
 ```json
 {
   "status": "ok",
@@ -95,6 +100,7 @@ curl http://localhost:8000/health
 ```
 
 **Tips:**
+
 - Dùng flag `-i` để xem headers:
   ```bash
   curl -i http://localhost:8000/health
@@ -111,6 +117,7 @@ npm run test:local
 ```
 
 **Kết quả mong đợi:**
+
 ```
 │ newman │
 │ ✓  01_Functional    │ 4 / 4  │
@@ -123,6 +130,7 @@ Pass ✓  │ 12 / 12
 ```
 
 **Report sinh tại:**
+
 ```
 reports/newman-lab04-local.xml
 reports/newman-lab04-local.html
@@ -145,6 +153,7 @@ make clean-reports  # Xóa reports cũ
 ```
 
 **Ví dụ:**
+
 ```bash
 make build && make run-detached && sleep 5 && make health && make test-docker
 ```
@@ -154,17 +163,20 @@ make build && make run-detached && sleep 5 && make health && make test-docker
 ## Dừng container
 
 **Option 1:** Nếu chạy với `--rm` (tự xóa):
+
 ```bash
 # Terminal 1: Ctrl+C
 # Container tự xóa
 ```
 
 **Option 2:** Nếu chạy background:
+
 ```bash
 docker stop fit4110-iot-lab04
 ```
 
 **Option 3:** Xóa tất cả containers và images:
+
 ```bash
 docker stop $(docker ps -q)
 docker rmi fit4110/iot-ingestion:lab04
@@ -207,45 +219,7 @@ ENV=local
 ```
 
 **Chạy với cấu hình khác:**
-```bash
-docker run --rm \
-  --name fit4110-iot-lab04 \
-  -p 8000:8000 \
-  -e AUTH_TOKEN=my-custom-token \
-  -e SERVICE_VERSION=0.5.0 \
-  fit4110/iot-ingestion:lab04
-```
 
----
-
-## Troubleshooting
-
-### Container không khởi động
-
-```bash
-docker logs fit4110-iot-lab04
-```
-
-### Port 8000 bị chiếm
-
-```bash
-# Tìm process đang dùng port 8000
-lsof -i :8000  # macOS/Linux
-netstat -ano | findstr :8000  # Windows
-
-# Hoặc dùng port khác
-docker run -p 9000:8000 ...
-```
-
-### Tests fail
-
-1. Kiểm tra container đang chạy:
-   ```bash
-   docker ps
-   ```
-
-2. Test health trực tiếp:
-   ```bash
    curl -v http://localhost:8000/health
    ```
 

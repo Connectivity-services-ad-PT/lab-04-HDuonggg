@@ -325,3 +325,200 @@ API đó có thể được đóng gói, chạy lại và kiểm thử trong con
 ```text
 Docker container đơn lẻ → Docker Compose nhiều service → Plug-a-thon.
 ```
+
+---
+
+## 14. Tài liệu Hỗ Trợ
+
+### 14.1 Hướng dẫn nhanh
+
+- 🚀 **[RUN_LOCAL.md](RUN_LOCAL.md)** – Hướng dẫn chạy trong 5 bước + troubleshooting
+- 📚 **[docs/DOCKER_LAB_GUIDE.md](docs/DOCKER_LAB_GUIDE.md)** – Docker concepts, best practices, debugging
+- 🔧 **[docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)** – Lỗi thường gặp & giải pháp
+- ✅ **[checklists/docker_readiness_checklist.md](checklists/docker_readiness_checklist.md)** – Pre-submission checklist
+- ✅ **[checklists/submission_checklist.md](checklists/submission_checklist.md)** – Bằng chứng cần nộp
+
+### 14.2 Tham khảo ngoài
+
+- [Docker Official Docs](https://docs.docker.com/)
+- [Dockerfile Reference](https://docs.docker.com/engine/reference/builder/)
+- [FastAPI + Docker](https://fastapi.tiangolo.com/deployment/docker/)
+- [OpenAPI 3.1.0 Spec](https://spec.openapis.org/oas/v3.1.0)
+- [RFC 7807 Problem Details](https://tools.ietf.org/html/rfc7807)
+
+---
+
+## 15. Cheat Sheet – Lệnh thường dùng
+
+```bash
+# Setup
+npm install
+docker --version
+
+# Build
+docker build -t fit4110/iot:lab04 .
+docker build --no-cache -t fit4110/iot:lab04 .  # Force rebuild
+
+# Run
+docker run --rm -p 8000:8000 --env-file .env.example fit4110/iot:lab04
+docker run -d --name fit4110-iot-lab04 ...      # Background
+
+# Debug
+docker logs fit4110-iot-lab04
+docker logs -f fit4110-iot-lab04                # Follow
+docker exec -it fit4110-iot-lab04 /bin/bash     # Shell
+docker exec fit4110-iot-lab04 curl http://localhost:8000/health
+
+# Test
+npm run test:local
+npm run test:mock
+npm run mock:iot
+
+# Inspect
+docker ps
+docker images
+docker history fit4110/iot:lab04
+docker inspect fit4110/iot:lab04
+
+# Cleanup
+docker stop fit4110-iot-lab04
+docker rm fit4110-iot-lab04
+docker rmi fit4110/iot:lab04
+docker system prune -a
+
+# Registry
+docker tag fit4110/iot:lab04 ghcr.io/org/team-iot:v0.1.0-lab04
+docker push ghcr.io/org/team-iot:v0.1.0-lab04
+```
+
+---
+
+## 16. Makefile Quick Commands
+
+```bash
+make install          # npm install
+make lint             # spectral lint
+make mock             # Start mock server
+make test-mock        # Test against mock
+make build            # docker build
+make run              # docker run (foreground)
+make run-detached     # docker run -d (background)
+make health           # curl /health
+make test-docker      # npm run test:local
+make stop             # docker stop
+make clean-reports    # rm reports/*
+```
+
+---
+
+## 17. FAQ
+
+### Q: Làm sao biết service chạy được trong container?
+**A:** Chạy `docker run ... fit4110/iot:lab04`, rồi `curl http://localhost:8000/health`. Nếu trả `{status: ok, ...}`, service chạy ổn.
+
+### Q: Newman test fail, phải làm gì?
+**A:** Kiểm tra:
+1. Container đang chạy? `docker ps`
+2. Health endpoint ok? `curl http://localhost:8000/health`
+3. Postman environment có authToken đúng?
+4. Xem logs: `docker logs fit4110-iot-lab04`
+
+### Q: Image size quá lớn?
+**A:** Kiểm tra `.dockerignore` có exclude `node_modules`, `.git`, `__pycache__` không. Hoặc dùng smaller base image (`python:3.11-slim` vs `python:3.11`).
+
+### Q: Port 8000 bị chiếm?
+**A:** `docker run -p 9000:8000 fit4110/iot:lab04`, rồi access `http://localhost:9000/health`.
+
+### Q: Cách nộp bài?
+**A:** Xem [checklists/submission_checklist.md](checklists/submission_checklist.md) để biết tất cả artifacts cần nộp.
+
+---
+
+## 18. Tips & Tricks
+
+### 18.1 Tối ưu build time
+
+```dockerfile
+# ✓ Good: order từ ít thay đổi → hay thay đổi
+COPY requirements.txt .      # Stable
+RUN pip install -r ...       # Cache nếu requirements.txt không đổi
+COPY src/ ./src/             # Changes often
+CMD [...]
+
+# ✗ Bad: copy all trước, rồi RUN
+COPY .
+RUN pip install -r requirements.txt
+```
+
+### 18.2 Debug layer caching
+
+```bash
+docker build -t fit4110/iot:lab04 . --progress=plain
+# Xem từng layer, biết layer nào cache hit/miss
+```
+
+### 18.3 Interactive debug
+
+```bash
+# Build thêm shell, rồi debug
+FROM python:3.11-slim
+...
+# Chạy interactive
+docker run -it fit4110/iot:lab04 /bin/bash
+```
+
+### 18.4 Check image trước push
+
+```bash
+docker inspect fit4110/iot:lab04 | grep -i size
+docker history fit4110/iot:lab04 --human
+```
+
+---
+
+## 19. Next Steps (Lab 05 Preview)
+
+Lab 05 sẽ cover:
+
+```
+┌─────────────────────────────────────────────────┐
+│            Docker Compose                       │
+├─────────────────────────────────────────────────┤
+│ version: '3.8'                                  │
+│ services:                                       │
+│   iot-service:                                  │
+│     build: .                                    │
+│     ports: [8000:8000]                          │
+│   analytics-service:                            │
+│     build: ./analytics                          │
+│     ports: [8001:8000]                          │
+│   postgres:                                     │
+│     image: postgres:16                          │
+│     environment:                                │
+│       POSTGRES_PASSWORD: local                  │
+└─────────────────────────────────────────────────┘
+      ↓
+  docker-compose up
+      ↓
+  Multi-service testing
+      ↓
+  Plug-a-thon integration
+```
+
+---
+
+## 20. Support & Feedback
+
+Gặp vấn đề?
+
+1. 👉 Check [RUN_LOCAL.md](RUN_LOCAL.md) – Quick start (5 bước)
+2. 👉 Check [docs/DOCKER_LAB_GUIDE.md](docs/DOCKER_LAB_GUIDE.md) – Concepts
+3. 👉 Check [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) – Common issues
+
+Feedback? Mở issue hoặc PR trên GitHub.
+
+---
+
+**Chúc bạn hoàn thành Lab 04 thành công!** 🚀🐳
+
+*Final reminder: Commit `.env.example` (public template), không commit `.env` (production secrets).*

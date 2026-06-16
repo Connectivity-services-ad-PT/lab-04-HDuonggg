@@ -2,36 +2,36 @@
 
 ## Dockerfile
 
-- [ ] Có base image hợp lý.
-- [ ] Có `WORKDIR`.
-- [ ] Có copy dependency trước source để tận dụng cache.
-- [ ] Có `EXPOSE`.
-- [ ] Có `CMD` hoặc `ENTRYPOINT`.
-- [ ] Có `HEALTHCHECK`.
-- [ ] Có user non-root.
-- [ ] Không chứa secret thật.
+- [X] Có base image hợp lý.
+- [X] Có `WORKDIR`.
+- [X] Có copy dependency trước source để tận dụng cache.
+- [X] Có `EXPOSE`.
+- [X] Có `CMD` hoặc `ENTRYPOINT`.
+- [X] Có `HEALTHCHECK`.
+- [X] Có user non-root.
+- [X] Không chứa secret thật.
 
 ## Runtime
 
-- [ ] Container chạy được.
-- [ ] Port map đúng.
-- [ ] `/health` trả `200`.
-- [ ] Log khởi động rõ ràng.
-- [ ] Cấu hình qua ENV.
+- [X] Container chạy được.
+- [X] Port map đúng.
+- [X] `/health` trả `200`.
+- [X] Log khởi động rõ ràng.
+- [X] Cấu hình qua ENV.
 
 ## Testing
 
-- [ ] Chạy lại Postman Collection từ Lab 03.
-- [ ] Newman report sinh ra trong `reports/`.
-- [ ] Functional test pass.
-- [ ] Auth test pass trên local/container.
-- [ ] Negative test pass trên local/container.
-- [ ] Boundary test pass hoặc có giải thích hợp đồng.
+- [X] Chạy lại Postman Collection từ Lab 03.
+- [X] Newman report sinh ra trong `reports/`.
+- [X] Functional test pass.
+- [X] Auth test pass trên local/container.
+- [X] Negative test pass trên local/container.
+- [X] Boundary test pass hoặc có giải thích hợp đồng.
 
 ## Evidence
 
-- [ ] Có ảnh/log `docker build`.
-- [ ] Có ảnh/log `docker run`.
-- [ ] Có ảnh/log `curl /health`.
-- [ ] Có Newman HTML/XML report.
-- [ ] Có tag image đúng quy ước.
+- [X] Có ảnh/log `docker build`.
+- [X] Có ảnh/log `docker run`.
+- [X] Có ảnh/log `curl /health`.
+- [X] Có Newman HTML/XML report.
+- [X] Có tag image đúng quy ước.

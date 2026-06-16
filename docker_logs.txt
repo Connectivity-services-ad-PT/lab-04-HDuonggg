@@ -1,0 +1,725 @@
+﻿INFO:     127.0.0.1:46210 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.17.0.1:53722 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52354 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34588 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.17.0.1:41598 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47908 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.17.0.1:35628 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.17.0.1:34366 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.17.0.1:34366 - "POST /readings HTTP/1.1" 201 Created
+INFO:     172.17.0.1:34366 - "GET /readings/latest?device_id=ESP32-LAB-A01&limit=5 HTTP/1.1" 200 OK
+INFO:     172.17.0.1:34366 - "GET /readings/R-20260616-0001 HTTP/1.1" 200 OK
+INFO:     172.17.0.1:34366 - "POST /readings HTTP/1.1" 500 Internal Server Error
+docker : INFO:     Started server process [7]
+At line:2 char:756
++ ... STEXITCODE; docker logs fit4110-iot-lab04 > docker_logs.txt 2>&1; try ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (INFO:     Started server process [7]:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/routing.py", line 291, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/dependencies/utils.py", line 640, in solve_dependencies
+    solved = await run_in_threadpool(call, **solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/starlette/concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2592, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 1029, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/iot_app/main.py", line 158, in verify_bearer_token
+    raise HTTPException(
+fastapi.exceptions.HTTPException: 401: {'type': 'https://smart-campus.local/problems/unauthorized', 'title': 
+'Unauthorized', 'status': 401, 'detail': 'Missing Authorization header'}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 59, in wrapped_app
+    response = await handler(conn, exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/iot_app/main.py", line 121, in http_exception_handler
+    problem.setdefault("title", status.HTTP_STATUS_CODES.get(exc.status_code, "HTTP Error"))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/starlette/status.py", line 197, in __getattr__
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+AttributeError: module 'starlette.status' has no attribute 'HTTP_STATUS_CODES'
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/routing.py", line 291, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/dependencies/utils.py", line 640, in solve_dependencies
+    solved = await run_in_threadpool(call, **solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/starlette/concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2592, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 1029, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/iot_app/main.py", line 170, in verify_bearer_token
+    raise HTTPException(
+fastapi.exceptions.HTTPException: 401: {'type': 'https://smart-campus.local/problems/unauthorized', 'title': 
+'Unauthorized', 'status': 401, 'detail': 'Invalid bearer token'}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+INFO:     172.17.0.1:37686 - "POST /readings HTTP/1.1" 500 Internal Server Error
+    await super().__call__(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 715, in __call__
+INFO:     172.17.0.1:37710 - "POST /readings HTTP/1.1" 422 Unprocessable Entity
+INFO:     172.17.0.1:37710 - "POST /readings HTTP/1.1" 422 Unprocessable Entity
+INFO:     172.17.0.1:37710 - "POST /readings HTTP/1.1" 201 Created
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 59, in wrapped_app
+    response = await handler(conn, exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/iot_app/main.py", line 121, in http_exception_handler
+    problem.setdefault("title", status.HTTP_STATUS_CODES.get(exc.status_code, "HTTP Error"))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/starlette/status.py", line 197, in __getattr__
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+AttributeError: module 'starlette.status' has no attribute 'HTTP_STATUS_CODES'
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/routing.py", line 291, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/dependencies/utils.py", line 640, in solve_dependencies
+    solved = await run_in_threadpool(call, **solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/starlette/concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2592, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 1029, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/iot_app/main.py", line 158, in verify_bearer_token
+    raise HTTPException(
+fastapi.exceptions.HTTPException: 401: {'type': 'https://smart-campus.local/problems/unauthorized', 'title': 
+'Unauthorized', 'status': 401, 'detail': 'Missing Authorization header'}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+INFO:     172.17.0.1:37710 - "POST /readings HTTP/1.1" 422 Unprocessable Entity
+INFO:     172.17.0.1:37710 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43288 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.17.0.1:59560 - "POST /readings HTTP/1.1" 500 Internal Server Error
+INFO:     127.0.0.1:53438 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49518 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38798 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39494 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36734 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53534 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51808 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34762 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43052 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50760 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37130 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37282 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36808 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57558 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44266 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44518 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34238 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48942 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55474 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45670 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43284 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33092 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33142 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42432 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52436 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53400 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48516 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45162 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59300 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60156 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40604 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40084 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50046 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50814 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50840 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50588 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52128 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52818 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44682 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43062 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48826 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54192 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47230 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59890 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53300 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44424 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60244 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50780 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34984 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56590 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46640 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56862 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38360 - "GET /health HTTP/1.1" 200 OK
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 59, in wrapped_app
+    response = await handler(conn, exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/iot_app/main.py", line 121, in http_exception_handler
+    problem.setdefault("title", status.HTTP_STATUS_CODES.get(exc.status_code, "HTTP Error"))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/starlette/status.py", line 197, in __getattr__
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+AttributeError: module 'starlette.status' has no attribute 'HTTP_STATUS_CODES'
+INFO:     127.0.0.1:36082 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48974 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47168 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43680 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60552 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58314 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34430 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42966 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41878 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48316 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54554 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56142 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36162 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36400 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53248 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39778 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56218 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57708 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59104 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55060 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49916 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58812 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58120 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56144 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47310 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49058 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41444 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34962 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54276 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45302 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60526 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52630 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45372 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60158 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47822 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60264 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34658 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57658 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54626 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33430 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59378 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38012 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43990 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33070 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41590 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45842 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49620 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44374 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48714 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41352 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58862 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33874 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32872 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39168 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52550 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59062 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56258 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36714 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51812 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58126 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57272 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58032 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54060 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52564 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57938 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41080 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57850 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35838 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56608 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60120 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41342 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38662 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38448 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60098 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48894 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43160 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37296 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52852 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55300 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51682 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45988 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55220 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35966 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46086 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51798 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39628 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60888 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60200 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46098 - "GET /health HTTP/1.1" 200 OK
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/routing.py", line 291, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/dependencies/utils.py", line 640, in solve_dependencies
+    solved = await run_in_threadpool(call, **solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/starlette/concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2592, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 1029, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/iot_app/main.py", line 158, in verify_bearer_token
+    raise HTTPException(
+fastapi.exceptions.HTTPException: 401: {'type': 'https://smart-campus.local/problems/unauthorized', 'title': 
+'Unauthorized', 'status': 401, 'detail': 'Missing Authorization header'}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 59, in wrapped_app
+    response = await handler(conn, exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/iot_app/main.py", line 121, in http_exception_handler
+    problem.setdefault("title", status.HTTP_STATUS_CODES.get(exc.status_code, "HTTP Error"))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/starlette/status.py", line 197, in __getattr__
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+AttributeError: module 'starlette.status' has no attribute 'HTTP_STATUS_CODES'
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/routing.py", line 291, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/dependencies/utils.py", line 640, in solve_dependencies
+    solved = await run_in_threadpool(call, **solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/starlette/concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2592, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 1029, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/iot_app/main.py", line 170, in verify_bearer_token
+    raise HTTPException(
+fastapi.exceptions.HTTPException: 401: {'type': 'https://smart-campus.local/problems/unauthorized', 'title': 
+'Unauthorized', 'status': 401, 'detail': 'Invalid bearer token'}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 59, in wrapped_app
+    response = await handler(conn, exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/iot_app/main.py", line 121, in http_exception_handler
+INFO:     127.0.0.1:57100 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57822 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59176 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48788 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56684 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50656 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37610 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36826 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59890 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50236 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59592 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33274 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38092 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52260 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39374 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57874 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57766 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46882 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41868 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37948 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33750 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40754 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49738 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42452 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39564 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44136 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36568 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49440 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47714 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35216 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56272 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55252 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51994 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60338 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40208 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38438 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55016 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45600 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.17.0.1:44952 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.17.0.1:60458 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.17.0.1:60458 - "POST /readings HTTP/1.1" 201 Created
+INFO:     172.17.0.1:60458 - "GET /readings/latest?device_id=ESP32-LAB-A01&limit=5 HTTP/1.1" 200 OK
+INFO:     172.17.0.1:60458 - "GET /readings/R-20260616-0003 HTTP/1.1" 200 OK
+INFO:     172.17.0.1:60458 - "POST /readings HTTP/1.1" 500 Internal Server Error
+INFO:     172.17.0.1:60474 - "POST /readings HTTP/1.1" 500 Internal Server Error
+INFO:     172.17.0.1:60490 - "POST /readings HTTP/1.1" 422 Unprocessable Entity
+INFO:     172.17.0.1:60490 - "POST /readings HTTP/1.1" 422 Unprocessable Entity
+INFO:     172.17.0.1:60490 - "POST /readings HTTP/1.1" 201 Created
+INFO:     172.17.0.1:60490 - "POST /readings HTTP/1.1" 422 Unprocessable Entity
+INFO:     172.17.0.1:60490 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33530 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.17.0.1:35952 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.17.0.1:35974 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.17.0.1:35974 - "POST /readings HTTP/1.1" 201 Created
+INFO:     172.17.0.1:35974 - "GET /readings/latest?device_id=ESP32-LAB-A01&limit=5 HTTP/1.1" 200 OK
+INFO:     172.17.0.1:35974 - "GET /readings/R-20260616-0005 HTTP/1.1" 200 OK
+INFO:     172.17.0.1:35974 - "POST /readings HTTP/1.1" 500 Internal Server Error
+INFO:     172.17.0.1:35992 - "POST /readings HTTP/1.1" 500 Internal Server Error
+    problem.setdefault("title", status.HTTP_STATUS_CODES.get(exc.status_code, "HTTP Error"))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/starlette/status.py", line 197, in __getattr__
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+AttributeError: module 'starlette.status' has no attribute 'HTTP_STATUS_CODES'
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/routing.py", line 291, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/dependencies/utils.py", line 640, in solve_dependencies
+    solved = await run_in_threadpool(call, **solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/starlette/concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2592, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 1029, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/iot_app/main.py", line 158, in verify_bearer_token
+    raise HTTPException(
+fastapi.exceptions.HTTPException: 401: {'type': 'https://smart-campus.local/problems/unauthorized', 'title': 
+'Unauthorized', 'status': 401, 'detail': 'Missing Authorization header'}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 59, in wrapped_app
+    response = await handler(conn, exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/iot_app/main.py", line 121, in http_exception_handler
+    problem.setdefault("title", status.HTTP_STATUS_CODES.get(exc.status_code, "HTTP Error"))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/starlette/status.py", line 197, in __getattr__
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+AttributeError: module 'starlette.status' has no attribute 'HTTP_STATUS_CODES'
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/routing.py", line 291, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/dependencies/utils.py", line 640, in solve_dependencies
+    solved = await run_in_threadpool(call, **solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/starlette/concurrency.py", line 39, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2592, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 1029, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/iot_app/main.py", line 170, in verify_bearer_token
+    raise HTTPException(
+fastapi.exceptions.HTTPException: 401: {'type': 'https://smart-campus.local/problems/unauthorized', 'title': 
+'Unauthorized', 'status': 401, 'detail': 'Invalid bearer token'}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/venv/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 59, in wrapped_app
+    response = await handler(conn, exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/iot_app/main.py", line 121, in http_exception_handler
+    problem.setdefault("title", status.HTTP_STATUS_CODES.get(exc.status_code, "HTTP Error"))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.11/site-packages/starlette/status.py", line 197, in __getattr__
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+AttributeError: module 'starlette.status' has no attribute 'HTTP_STATUS_CODES'
+INFO:     172.17.0.1:36010 - "POST /readings HTTP/1.1" 422 Unprocessable Entity
+INFO:     172.17.0.1:36010 - "POST /readings HTTP/1.1" 422 Unprocessable Entity
+INFO:     172.17.0.1:36010 - "POST /readings HTTP/1.1" 201 Created
+INFO:     172.17.0.1:36010 - "POST /readings HTTP/1.1" 422 Unprocessable Entity
+INFO:     172.17.0.1:36010 - "GET /health HTTP/1.1" 200 OK

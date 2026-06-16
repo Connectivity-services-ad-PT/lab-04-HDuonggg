@@ -1,0 +1,6 @@
+extends: spectral:oas
+
+# Optional rule overrides can go here, for example:
+# rules:
+#   operation-2xx-response: off
+#   operation-operationId: warning

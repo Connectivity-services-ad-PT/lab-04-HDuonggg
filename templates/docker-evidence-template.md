@@ -6,7 +6,7 @@
 - Service:
 - Image tag:
 
-## 1. Build evidence
+## 1. Build Evidence
 
 Command:
 
@@ -16,7 +16,7 @@ docker build -t <image-name>:<tag> .
 
 Paste log or screenshot here.
 
-## 2. Run evidence
+## 2. Run Evidence
 
 Command:
 
@@ -26,7 +26,7 @@ docker run --rm -p 8000:8000 --env-file .env.example <image-name>:<tag>
 
 Paste log or screenshot here.
 
-## 3. Healthcheck evidence
+## 3. Healthcheck Evidence
 
 Command:
 
@@ -42,7 +42,7 @@ Result:
 }
 ```
 
-## 4. Newman evidence
+## 4. Newman Evidence
 
 Command:
 
